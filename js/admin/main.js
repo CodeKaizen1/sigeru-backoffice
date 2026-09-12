@@ -1,10 +1,5 @@
-//
-// PUNTO DE ENTRADA del panel administrador.
-// Solo arranca el controlador. Al ser un script type="module", el
-// navegador ya espera a que el HTML esté parseado antes de ejecutarlo,
-// así que no hace falta envolver esto en un DOMContentLoaded.
-//
+// Punto de entrada del panel administrador: arranca el controlador.
 
-import { initAdmin } from "./controller.js";
+import { initAdmin } from "./controller.js?v=30";
 
 initAdmin();

@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSP: incluye cdnjs (SheetJS); sin scripts/estilos inline. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
     <title>Panel administrador - SiGeRU</title>
 
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/pages/admin.css">
+    <link rel="stylesheet" href="css/pages/admin.css?v=24">
 </head>
 <body>
 
@@ -30,11 +32,14 @@
                     <button class="admin-menu-link" data-module="incidencias">Incidencias</button>
                     <button class="admin-menu-link" data-module="contenedores">Contenedores</button>
                     <button class="admin-menu-link" data-module="camiones">Camiones</button>
+                    <button class="admin-menu-link" data-module="cuadrillas">Cuadrillas</button>
+                    <button class="admin-menu-link" data-module="rutas">Rutas</button>
+                    <button class="admin-menu-link" data-module="centrosDeAcopio">Centros de acopio</button>
+                    <button class="admin-menu-link" data-module="vertederos">Vertederos</button>
                     <button class="admin-menu-link" data-module="funcionarios">Funcionarios</button>
+                    <button class="admin-menu-link" data-module="solicitudes">Solicitudes</button>
                 </nav>
             </div>
-
-            <a href="index.html" class="admin-salir">Salir</a>
         </aside>
 
         <main class="admin-main">
@@ -46,6 +51,12 @@
                     <p id="moduleDescription">
                         Vista inicial del estado general del sistema.
                     </p>
+                </div>
+
+                <div class="header-acciones">
+                    <div id="notificacionesContenedor" class="notificaciones-campanita-caja"></div>
+                    <div id="cuentaContenedor" class="cuenta-menu-caja"></div>
+                    <a href="#" id="btnSalir" class="admin-salir">Cerrar sesión</a>
                 </div>
             </section>
 
@@ -62,10 +73,14 @@
                     <option value="todos">Todos los estados</option>
                 </select>
 
+                <button type="button" id="exportBtn" class="btn-secundario">Exportar</button>
+
                 <button type="button" id="newRecordBtn" class="btn-principal">Nuevo</button>
             </section>
 
-            <section class="module-content">
+            <section id="filtrosExtra" class="filtros-extra oculto"></section>
+
+            <section class="module-content" id="moduleContent">
                 <div id="moduleList" class="data-list"></div>
 
                 <aside id="detailPanel" class="detail-panel">
@@ -75,6 +90,17 @@
                 </aside>
             </section>
         </main>
+    </div>
+
+    <!-- Contenido armado por renderDetalle() en view.js. -->
+    <div id="detailModal" class="modal-overlay oculto">
+        <div class="modal-card">
+            <div class="modal-header modal-header-detalle">
+                <button type="button" id="detailModalCerrar" class="modal-cerrar" aria-label="Cerrar">✕</button>
+            </div>
+
+            <div id="detailModalBody"></div>
+        </div>
     </div>
 
     <div id="formModal" class="modal-overlay oculto">
@@ -95,6 +121,11 @@
         </div>
     </div>
 
-    <script type="module" src="js/admin/main.js"></script>
+    <!-- Debe cargarse antes que main.js: model.js usa sus funciones globales. -->
+    <script src="js/almacenamiento-simulado.js?v=11"></script>
+    <!-- SheetJS (cdnjs), para el botón Exportar. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script type="module" src="js/admin/main.js?v=31"></script>
+    <script type="module" src="js/salir.js?v=4"></script>
 </body>
 </html>
